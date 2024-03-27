@@ -121,8 +121,15 @@ function getPolynom(...prms) {
  *   ...
  *   memoizer() => the same random number  (next run, returns the previous cached result)
  */
-function memoize(/* func */) {
-  throw new Error('Not implemented');
+function memoize(func) {
+  const hsh = {};
+  const hshChecker = (prm) => {
+    if (!hsh[prm]) {
+      hsh[prm] = func(prm);
+    }
+    return hsh[prm];
+  };
+  return hshChecker;
 }
 
 /**
