@@ -191,8 +191,26 @@ function retry(func, attempts) {
  * cos(3.141592653589793) ends
  *
  */
-function logger(/* func, logFunc */) {
-  throw new Error('Not implemented');
+function logger(func, logFunc) {
+  const setPrmToStr = (prmArr) => {
+    const completedPrms = [];
+    for (let i = 0; i < prmArr.length; i += 1) {
+      completedPrms.push(JSON.stringify(prmArr[i]));
+    }
+    return completedPrms.join(',');
+  };
+  const outputer = (...prms) => {
+    let output;
+    try {
+      logFunc(`${func.name}(${setPrmToStr(prms)}) starts`);
+      output = func(...prms);
+      logFunc(`${func.name}(${setPrmToStr(prms)}) ends`);
+    } catch (err) {
+      throw new Error(err);
+    }
+    return output;
+  };
+  return outputer;
 }
 
 /**
